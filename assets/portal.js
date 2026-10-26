@@ -63,7 +63,7 @@ async function refreshSupplier(){
  unwrap(db.from("supplier_documents").select("*").eq("supplier_id",company.id).order("created_at",{ascending:false})),
  unwrap(db.from("rfq_matches").select("*").eq("supplier_id",company.id).order("created_at",{ascending:false}))
  ]);
- $("my-products").innerHTML=products.length?products.map(p=>'<div class="record"><h3>'+esc(p.name)+'</h3><p>'+esc(p.category)+' · '+status(p.status)+'</p>'+(p.review_note?'<p>Feedback: '+esc(p.review_note)+'</p>':'')+'</div>').join(""):'<div class="empty">No products yet. New product listings require review.</div>';
+ $("my-products").innerHTML=products.length?products.map(p=>'<div class="record"><h3>'+esc(p.name)+'</h3><p>'+esc(p.category)+' · '+status(p.status)+'</p>'+(p.review_note?'<p>Feedback: '+esc(p.review_note)+'</p>':'')+'<button class="btn outline" data-edit-product="'+esc(p.id)+'">Edit description & resubmit</button></div>').join(""):'<div class="empty">No products yet. New product listings require review.</div>';
  $("my-documents").innerHTML=documents.length?documents.map(d=>'<div class="record"><strong>'+esc(d.document_type)+'</strong><p>'+esc(d.object_path.split("/").pop())+'</p><button class="btn outline" data-document="'+esc(d.object_path)+'">Open private file</button></div>').join(""):'<div class="empty">No evidence uploaded.</div>';
  const rid=matches.map(m=>m.rfq_id);supplierRFQs=rid.length?await unwrap(db.from("rfqs").select("*").in("id",rid).order("created_at",{ascending:false})):[];const quotes=rid.length?await unwrap(db.from("quotes").select("*").eq("supplier_id",company.id)):[];
  $("supplier-matches").innerHTML=supplierRFQs.length?supplierRFQs.map(r=>{
@@ -75,13 +75,16 @@ async function refreshSupplier(){
 }
 async function refreshAdmin(){
  if(!db||!admin)return;
- const [suppliers,products,rfqs]=await Promise.all([
+ const [suppliers,products,rfqs,documents,privateContacts]=await Promise.all([
  unwrap(db.from("suppliers").select("*").order("created_at",{ascending:false}).limit(100)),
  unwrap(db.from("products").select("*,suppliers(name)").order("created_at",{ascending:false}).limit(100)),
- unwrap(db.from("rfqs").select("*").eq("status","open").order("created_at",{ascending:false}).limit(100))
+ unwrap(db.from("rfqs").select("*").eq("status","open").order("created_at",{ascending:false}).limit(100)),
+ unwrap(db.from("supplier_documents").select("*").order("created_at",{ascending:false}).limit(100)),
+ unwrap(db.from("supplier_private").select("*").limit(100))
  ]);
- $("review-suppliers").innerHTML=suppliers.length?suppliers.map(s=>'<article class="record"><h3>'+esc(s.name)+'</h3><p>'+esc(s.country)+' · '+status(s.status)+'</p><p>'+text(s.description)+'</p><div class="actions"><button class="btn primary" data-review="supplier" data-id="'+esc(s.id)+'" data-decision="approved">Approve</button><button class="btn outline" data-review="supplier" data-id="'+esc(s.id)+'" data-decision="rejected">Reject</button></div></article>').join(""):'No applications.';
+ $("review-suppliers").innerHTML=suppliers.length?suppliers.map(s=>'<article class="record"><h3>'+esc(s.name)+'</h3><p>'+esc(s.country)+' · '+status(s.status)+'</p><p>'+text(s.description)+'</p><p class="hint">Contact: '+esc(privateContacts.find(c=>c.supplier_id===s.id)?.contact_name||"Not provided")+' · '+esc(privateContacts.find(c=>c.supplier_id===s.id)?.contact_email||"Not provided")+'</p><div class="actions"><button class="btn primary" data-review="supplier" data-id="'+esc(s.id)+'" data-decision="approved">Approve</button><button class="btn outline" data-review="supplier" data-id="'+esc(s.id)+'" data-decision="rejected">Reject</button></div></article>').join(""):'No applications.';
  $("review-products").innerHTML=products.length?products.map(p=>'<article class="record"><h3>'+esc(p.name)+'</h3><p>'+esc(p.suppliers?.name||"Supplier")+' · '+esc(p.category)+' · '+status(p.status)+'</p><p>'+text(p.description)+'</p><div class="actions"><button class="btn primary" data-review="product" data-id="'+esc(p.id)+'" data-decision="approved">Approve</button><button class="btn outline" data-review="product" data-id="'+esc(p.id)+'" data-decision="rejected">Reject</button></div></article>').join(""):'No applications.';
+ $("review-documents").innerHTML=documents.length?documents.map(d=>'<div class="record"><h3>'+esc(suppliers.find(s=>s.id===d.supplier_id)?.name||"Supplier")+'</h3><p>'+esc(d.document_type)+' · '+esc(d.object_path.split("/").pop())+'</p><button class="btn outline" data-document="'+esc(d.object_path)+'">Review private file</button></div>').join(""):'<div class="empty">No supplier evidence submitted.</div>';
  $("invite-rfq").innerHTML=rfqs.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.title)+'</option>').join("");
  $("invite-supplier").innerHTML=suppliers.filter(s=>s.status==="approved").map(s=>'<option value="'+esc(s.id)+'">'+esc(s.name)+'</option>').join("");
 }
@@ -113,6 +116,7 @@ function bindDelegates(){
  document.addEventListener("click",e=>{
  const tab=e.target.closest("[data-tab]");if(tab){showTab(tab.dataset.tab);return;}
  const review=e.target.closest("[data-review]");if(review){run(async()=>{if(!admin)throw Error("Admin access required");const decision=review.dataset.decision;if(!confirm("Confirm "+decision+" for this "+review.dataset.review+"?"))return;const note=decision==="rejected"?prompt("Review feedback (optional)","")||"":"";if(review.dataset.review==="supplier")await unwrap(db.rpc("review_supplier",{sid:review.dataset.id,decision,note}));else await unwrap(db.rpc("review_product",{pid:review.dataset.id,decision,note}));await refreshAdmin();await refreshCatalog();notice("Review decision saved.");});return;}
+ const edit=e.target.closest("[data-edit-product]");if(edit){run(async()=>{if(!company)throw Error("Company required");const rows=await unwrap(db.from("products").select("description").eq("id",edit.dataset.editProduct).limit(1));if(!rows.length)throw Error("Product unavailable");const updated=prompt("Update the product description. This will require fresh admin review:",rows[0].description||"");if(updated===null)return;await unwrap(db.from("products").update({description:updated.trim()}).eq("id",edit.dataset.editProduct));await refreshSupplier();notice("Product changes saved and resubmitted for review.");});return;}
  const close=e.target.closest("[data-close-rfq]");if(close){run(async()=>{if(!confirm("Close this RFQ to new quotes?"))return;await unwrap(db.from("rfqs").update({status:"closed"}).eq("id",close.dataset.closeRfq));await refreshBuyer();notice("RFQ closed.");});return;}
  const decision=e.target.closest("[data-quote-decision]");if(decision){run(async()=>{if(!confirm("Confirm this quotation decision? It cannot be changed."))return;await unwrap(db.from("quotes").update({status:decision.dataset.quoteDecision}).eq("id",decision.dataset.quoteId));await refreshBuyer();notice("Quotation decision recorded. Final procurement and payments happen outside the platform.");});return;}
  const doc=e.target.closest("[data-document]");if(doc){run(async()=>{const d=await unwrap(db.storage.from("supplier-evidence").createSignedUrl(doc.dataset.document,90));window.open(d.signedUrl,"_blank","noopener,noreferrer");});return;}
