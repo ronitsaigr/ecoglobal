@@ -1,97 +1,172 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#09231d">
-  <meta name="description" content="EcoGlobal is taking shape. A new chapter in practical sustainability and thoughtful innovation is on its way.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="EcoGlobal — Growing what comes next">
-  <meta property="og:description" content="A greener future, in progress. Discover what we're building soon.">
-  <meta property="og:url" content="https://ecoglobal.in/">
-  <link rel="canonical" href="https://ecoglobal.in/">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>EcoGlobal — Growing what comes next</title>
-  <style>
-    :root { color-scheme: dark; --bg:#071d18; --paper:#eaf3e8; --mute:#a8c0b5; --lime:#c9f497; --edge:rgba(217,245,219,.16); }
-    * { box-sizing: border-box; }
-    html { min-height:100%; background:var(--bg); }
-    body { margin:0; min-height:100vh; color:var(--paper); font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:radial-gradient(ellipse at 80% 44%, #174537 0%, rgba(14,49,38,.2) 33%, transparent 61%), linear-gradient(147deg,#071b16 0%,#092920 56%,#071d18 100%); overflow-x:hidden; }
-    a { color:inherit; }
-    .shell { width:min(1260px, calc(100% - 96px)); margin:0 auto; min-height:100vh; display:flex; flex-direction:column; position:relative; isolation:isolate; }
-    .noise { position:fixed; inset:0; pointer-events:none; opacity:.15; z-index:3; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.54' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"); }
-    .top { padding:34px 0; display:flex; align-items:center; justify-content:space-between; gap:24px; border-bottom:1px solid var(--edge); }
-    .brand { display:inline-flex; align-items:center; gap:12px; text-decoration:none; letter-spacing:-.055em; font-weight:750; font-size:27px; }
-    .brand svg { display:block; width:35px; height:35px; }
-    .brand em { color:var(--lime); font-style:normal; }
-    .top-note { font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--mute); }
-    main { flex:1; display:grid; grid-template-columns: 1.04fr .96fr; gap:16px; align-items:center; padding:66px 0 100px; }
-    .copy { position:relative; z-index:2; max-width:700px; }
-    .eyebrow { display:inline-flex; align-items:center; gap:10px; color:var(--lime); letter-spacing:.18em; font-size:12px; font-weight:720; text-transform:uppercase; }
-    .eyebrow::before { content:""; display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--lime); box-shadow:0 0 0 5px rgba(201,244,151,.09); }
-    h1 { margin:30px 0 24px; letter-spacing:-.082em; font-size:clamp(66px, 7.55vw, 114px); font-weight:620; line-height:.99; }
-    h1 strong { font-weight:620; color:var(--lime); }
-    .lede { font-size:clamp(18px,1.85vw,23px); line-height:1.56; max-width:520px; color:#d0e2d5; font-weight:380; }
-    .sub { color:var(--mute); line-height:1.75; max-width:490px; font-size:15px; margin:22px 0 0; }
-    .rule { width:56px; height:1px; background:var(--lime); margin:38px 0 20px; }
-    .signoff { color:var(--lime); letter-spacing:.12em; font-size:11px; text-transform:uppercase; font-weight:650; }
-    .visual { min-height:530px; display:grid; place-items:center; position:relative; }
-    .halo { width:min(100%,550px); aspect-ratio:1; border:1px solid rgba(209,246,186,.13); border-radius:50%; display:grid; place-items:center; position:relative; box-shadow:0 0 120px rgba(115,200,123,.04), inset 0 0 115px rgba(182,246,149,.015); }
-    .halo::before,.halo::after { content:""; position:absolute; border-radius:50%; inset:10%; border:1px dashed rgba(213,245,187,.17); animation:turn 90s linear infinite; }
-    .halo::after { inset:24%; border-style:solid; border-color:rgba(205,244,178,.12); animation-direction:reverse; }
-    .orb { width:75%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 32% 28%, rgba(166,246,171,.35), transparent 32%),radial-gradient(circle at 74% 80%, rgba(113,181,123,.22), transparent 48%),linear-gradient(135deg,#2d7859,#103c32 50%,#0b2a24); border:1px solid rgba(204,247,190,.24); box-shadow:inset -30px -34px 72px rgba(0,0,0,.42), 0 40px 90px rgba(0,0,0,.16); display:grid; place-items:center; position:relative; overflow:hidden; transform:rotate(-12deg); }
-    .orb svg { width:85%; height:85%; opacity:.95; filter:drop-shadow(0 3px 10px rgba(0,0,0,.1)); }
-    .ring-label { position:absolute; left:-10px; bottom:13%; transform:rotate(-90deg) translateX(-10%); color:#92ad9a; font-size:10px; letter-spacing:.24em; text-transform:uppercase; transform-origin:top left; }
-    .spark { position:absolute; width:7px; height:7px; border-radius:50%; background:#d9ff9e; box-shadow:0 0 18px #dcffa8; }
-    .spark.one { right:13%; top:19%; }.spark.two { left:8%; bottom:22%; width:4px; height:4px; opacity:.65; }
-    footer { display:flex; justify-content:space-between; gap:16px; padding:25px 0 28px; border-top:1px solid var(--edge); font-size:12px; color:var(--mute); }
-    footer .domain { color:#e0eadf; letter-spacing:.04em; }
-    @keyframes turn { to { transform:rotate(360deg); } }
-    @media (max-width: 850px) { .shell { width:min(100% - 44px,660px); } .top { padding:25px 0; } .top-note { display:none; } main { display:flex; flex-direction:column; align-items:stretch; gap:14px; padding:74px 0 62px; } h1 { font-size:clamp(60px, 13vw, 95px); } .visual { min-height:0; padding:18px 18px 0; } .halo { width:min(100%,380px); } .ring-label { display:none; } }
-    @media (max-width: 480px) { .shell { width:calc(100% - 38px); } .brand { font-size:24px; } .brand svg { width:31px; height:31px; } h1 { font-size:clamp(54px, 12.7vw, 71px); margin-top:26px; } .lede { font-size:18px; } .sub { font-size:14px; } .visual { padding:20px 8px 5px; } footer { flex-direction:column; gap:7px; font-size:11px; } }
-    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none!important; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#082a20">
+<meta name="description" content="EcoGlobal helps businesses discover sustainable packaging and materials, prepare sourcing requests, and evaluate supplier documentation. A global B2B sourcing platform in development.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EcoGlobal | Smarter sustainable sourcing">
+<meta property="og:description" content="Discover materials, build precise RFQs, and bring more clarity to sustainable supply chains.">
+<meta property="og:url" content="https://ecoglobal.in/">
+<link rel="canonical" href="https://ecoglobal.in/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="assets/styles.css">
+<title>EcoGlobal | Smarter sustainable sourcing</title>
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="shell">
-    <header class="top">
-      <a class="brand" href="/" aria-label="EcoGlobal home">
-        <svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="16" stroke="#BEE69B" stroke-width="1.4"/><path d="M9.5 22.5c10-1 17-9.5 18-13-12.5.8-19 7.6-18 13Z" fill="#C9F497"/><path d="M10 26c4-8 9.5-11 17.5-16.5M10 20l3 4" stroke="#113529" stroke-linecap="round" stroke-width="1.5"/></svg>
-        <span>eco<em>global</em></span>
-      </a>
-      <span class="top-note">Sustainable ideas. Global perspective.</span>
-    </header>
-    <main>
-      <section class="copy" aria-labelledby="headline">
-        <div class="eyebrow">Something meaningful is taking root</div>
-        <h1 id="headline">Growing<br>what comes <strong>next.</strong></h1>
-        <p class="lede">A new space for ideas, innovation, and a more sustainable world.</p>
-        <p class="sub">EcoGlobal is at the beginning of its journey. We're shaping a thoughtful new platform, with real-world impact at its heart.</p>
-        <div class="rule" aria-hidden="true"></div>
-        <p class="signoff">Our first chapter is coming soon.</p>
-      </section>
-      <div class="visual" aria-hidden="true">
-        <div class="halo">
-          <span class="ring-label">Made for the world we're becoming</span>
-          <div class="orb">
-            <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="210" cy="210" r="169" stroke="#9AC9A4" stroke-opacity=".38" stroke-width="1" />
-              <ellipse cx="210" cy="210" rx="93" ry="169" stroke="#B0DBB5" stroke-opacity=".35" stroke-width="1.4"/>
-              <ellipse cx="210" cy="210" rx="154" ry="70" stroke="#B0DBB5" stroke-opacity=".25" stroke-width="1.2"/>
-              <path d="M44 210H376M210 41V379" stroke="#B0DBB5" stroke-opacity=".28" stroke-width="1"/>
-              <path d="M114 140c29-28 68-27 102-25 39 3 69-12 96-46-1 43-14 92-48 123-33 32-77 46-122 26-22-11-31-43-28-78Z" fill="#C9F497" fill-opacity=".91"/>
-              <path d="M118 250c46-37 99-67 182-140" stroke="#2F7859" stroke-width="5" stroke-linecap="round" />
-              <path d="M159 202c-7-22-11-35-9-59M209 170c19 3 41 2 64-2" stroke="#3E8560" stroke-width="4" stroke-linecap="round"/>
-              <path d="M118 250c37 5 70 27 79 74" stroke="#C9F497" stroke-width="4" stroke-linecap="round"/>
-              <path d="M186 316c27-45 63-55 105-42-20 43-52 63-105 42Z" fill="#9FD28E"/>
-            </svg>
-          </div>
-          <span class="spark one"></span><span class="spark two"></span>
-        </div>
-      </div>
-    </main>
-    <footer><span>© 2026 EcoGlobal. Building with purpose.</span><span class="domain">ecoglobal.in</span></footer>
+<div class="topbar"><div class="container"><span class="statusdot" aria-hidden="true"></span> Building a more transparent way to source sustainable materials worldwide <span aria-hidden="true">↗</span></div></div>
+<header class="site-header">
+ <div class="container header-inner">
+   <a href="#home" class="brand" aria-label="EcoGlobal home"><span class="brand-mark" aria-hidden="true">✳</span><span>eco<b>global</b></span></a>
+   <nav class="navlinks" id="main-nav" aria-label="Main navigation">
+     <a href="#home" data-nav="home">Home</a><a href="#discover" data-nav="discover">Explore materials</a><a href="#how" data-nav="how">How it works</a><a href="#suppliers" data-nav="suppliers">For suppliers</a><a href="#about" data-nav="about">Our approach</a>
+   </nav>
+   <div class="header-actions"><a class="btn btn-dark btn-small" href="#rfq">Request sourcing <span aria-hidden="true">↗</span></a></div>
+   <button type="button" class="menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">☰</button>
+ </div>
+</header>
+<main id="main">
+<section id="home" class="page active" aria-label="Homepage">
+ <div class="hero">
+  <div class="container">
+   <div>
+    <span class="pill dark"><span class="statusdot"></span> EcoGlobal · B2B sourcing platform</span>
+    <h1>Better materials.<br><em>Better decisions.</em><br>Better future.</h1>
+    <p class="hero-lede">Sustainable sourcing should be practical, transparent, and global. Discover packaging alternatives, build better purchase requirements, and start the right supplier conversations—all in one place.</p>
+    <div class="hero-actions"><a href="#discover" class="btn btn-lime">Explore sourcing categories <span aria-hidden="true">↗</span></a><a href="#rfq" class="btn btn-ghost" style="color:#e7f4e5;border-color:#587c62">Create a sourcing request</a></div>
+    <div class="trustline"><span>Built for business buyers</span><span>Documentation-first approach</span><span>Global outlook</span></div>
+   </div>
+   <div class="orb-wrap" aria-hidden="true"><div class="orb"><div class="land a"></div><div class="land b"></div><div class="land c"></div></div><div class="orbit-tag a"><span>◈</span> Responsible sourcing</div><div class="orbit-tag b"><span>◎</span> Global opportunities</div></div>
+   <div class="scroll-note">DISCOVER THE PLATFORM ↓</div>
   </div>
+ </div>
+ <div class="metrics"><div class="container metrics-inner">
+  <div class="metric"><div class="mi" aria-hidden="true">▤</div><div><strong>Explore materials</strong><small>Compare sourcing categories and applications</small></div></div>
+  <div class="metric"><div class="mi" aria-hidden="true">✎</div><div><strong>Build an RFQ</strong><small>Turn a requirement into a structured brief</small></div></div>
+  <div class="metric"><div class="mi" aria-hidden="true">✓</div><div><strong>Ask for evidence</strong><small>Request supplier documents before making claims</small></div></div>
+ </div></div>
+ <div class="section container">
+  <div class="section-head"><div><div class="eyebrow">Explore possibilities</div><h2>Source with more intention.</h2><p>Start with the packaging and material families businesses use every day. Each category is a sourcing pathway—not a claim of current inventory.</p></div><a class="btn btn-ghost" href="#discover">View all categories ↗</a></div>
+  <div id="home-categories" class="grid-3"></div>
+ </div>
+ <div class="section soft">
+  <div class="container">
+   <div class="section-head"><div><div class="eyebrow">How EcoGlobal helps</div><h2>From a question to a clear brief.</h2><p>Good sourcing starts with a well-defined need and the right questions about performance, availability, and material claims.</p></div></div>
+   <div class="grid-3">
+     <div class="process-card"><div class="num">01</div><h3>Discover alternatives</h3><p>Explore packaging materials by use case, physical requirements, and possible trade-offs.</p></div>
+     <div class="process-card"><div class="num">02</div><h3>Define what matters</h3><p>Specify quantity, size, geography, deadlines, and any required evidence in an RFQ.</p></div>
+     <div class="process-card"><div class="num">03</div><h3>Evaluate with clarity</h3><p>Request supporting documents before comparing claims, quotes, and supplier capabilities.</p></div>
+   </div>
+  </div>
+ </div>
+ <div class="section container">
+  <div class="split">
+   <div class="promise"><span class="pill dark">Our operating principle</span><h3>Green claims need more than green words.</h3><p>We want environmental claims to be backed by the right supporting information—not just a badge, label, or marketing statement.</p><div class="checklist"><div class="checkitem"><span>✓</span> Clear material specifications</div><div class="checkitem"><span>✓</span> Appropriate test reports or certificates, where relevant</div><div class="checkitem"><span>✓</span> Transparent manufacturing and logistics considerations</div></div></div>
+   <div><div class="eyebrow">Built for the real world</div><h2 class="block-title">Less guesswork.<br>More grounded decisions.</h2><p class="muted" style="line-height:1.8">A label such as “recyclable” or “compostable” depends on material design, collection systems, standards, and geography. EcoGlobal is being designed to make those checks part of the sourcing conversation—not an afterthought.</p><div class="notice">EcoGlobal is an early-stage platform. Materials shown are sourcing categories, not certified or currently stocked products. Individual supplier documents and claims must be checked before purchase.</div><p><a href="#how" class="btn btn-text">See our sourcing framework ↗</a></p></div>
+  </div>
+ </div>
+ <div class="section tight container"><div class="callout"><div><div class="eyebrow" style="color:#bde89c">Start with your requirement</div><h2>Have a material or packaging challenge?</h2><p>Build a sourcing brief and share the exact requirements you need solved.</p></div><a href="#rfq" class="btn btn-lime">Prepare an RFQ ↗</a></div></div>
+</section>
+
+<section id="discover" class="page" aria-label="Explore materials">
+ <div class="page-hero"><div class="container"><div class="eyebrow">EcoGlobal materials directory</div><h1>Explore what you could source.</h1><p>Browse potential alternatives by application. These are research-led material categories, not live stock listings or verified supplier offers.</p></div></div>
+ <div class="section container">
+   <div class="directory-tools"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Search material, application or keyword…" aria-label="Search sourcing categories"></label><div class="filters" id="catalog-filters" aria-label="Material filters"></div></div>
+   <div class="results-note" id="results-note" role="status"></div>
+   <div id="directory-grid" class="grid-3"></div>
+   <div id="directory-empty" class="empty-state hide"><h3>No exact category match.</h3><p>Try a broader keyword or send us a custom sourcing brief.</p><a href="#rfq" class="btn btn-dark">Create a custom RFQ</a></div>
+   <section id="material-detail" class="detail-sheet" aria-live="polite" aria-label="Category details"></section>
+   <div style="margin-top:27px" class="notice">Not seeing what you need? Use the RFQ builder to describe another category. No prices, supplier certifications, or supply availability are implied by this directory.</div>
+ </div>
+</section>
+
+<section id="how" class="page" aria-label="How EcoGlobal works">
+ <div class="page-hero"><div class="container"><div class="eyebrow">Our model</div><h1>Sourcing should start with clarity.</h1><p>A simple buyer workflow, with evidence requests designed into the process from day one.</p></div></div>
+ <div class="section container"><div class="split" style="align-items:start">
+  <div>
+   <div class="guide-row"><div class="num">01</div><div><h3>Define a real need</h3><p>Tell us the use case, dimensions, desired material, expected quantities, shipping destination, and sourcing timeline.</p></div></div>
+   <div class="guide-row"><div class="num">02</div><div><h3>Choose the evidence you need</h3><p>Specify relevant documents such as chain-of-custody, recycled-content evidence, composition reports, or compostability tests, where applicable.</p></div></div>
+   <div class="guide-row"><div class="num">03</div><div><h3>Prepare a supplier-ready RFQ</h3><p>Generate a structured message you can download, copy, or send through your email app. Buyer submissions are not stored on this website.</p></div></div>
+   <div class="guide-row"><div class="num">04</div><div><h3>Compare actual supplier evidence</h3><p>When quotes and product documentation are available, evaluate quality, cost, lead time, claims, and logistics side by side.</p></div></div>
+  </div>
+  <div class="side-panel"><h3>Documentation checklist</h3><p>What evidence is appropriate depends on the material and market. A starting checklist may include:</p><ul><li>Material composition and specification sheets</li><li>Available test reports and supporting certificates</li><li>Traceability or chain-of-custody where relevant</li><li>Minimum order quantities and lead times</li><li>Packaging performance and local disposal conditions</li></ul><div class="notice">A certificate is not automatically proof that every finished product or marketing claim meets a standard. Check scope, issuer, validity, and applicability.</div><p><a href="#rfq" class="btn btn-dark" style="margin-top:14px">Build your RFQ ↗</a></p></div>
+ </div></div>
+ <div class="section soft"><div class="container"><div class="section-head"><div><div class="eyebrow">Frequently asked</div><h2>Before you begin.</h2></div></div><div class="faq">
+ <details><summary>Can I purchase materials on EcoGlobal today?</summary><p>Not through an online checkout yet. This first release provides category discovery and a structured sourcing enquiry workflow. Supplier listings, quotation management, and transactions will be introduced as the network develops.</p></details>
+ <details><summary>Are the materials or suppliers verified?</summary><p>No individual suppliers are listed or certified by EcoGlobal in this release. We outline evidence to request and evaluate; supplier verification requires checking documentation and individual offers.</p></details>
+ <details><summary>Is EcoGlobal only for buyers in India?</summary><p>No. The platform is designed with international B2B sourcing in mind. Actual supply routes and regulatory requirements vary by country.</p></details>
+ <details><summary>How do RFQ submissions work?</summary><p>The form prepares an email in your default mail app or lets you download/copy your request. It does not silently submit your details to a backend or guarantee that an email has been delivered.</p></details>
+ </div></div></div>
+</section>
+
+<section id="suppliers" class="page" aria-label="Supplier onboarding">
+ <div class="page-hero"><div class="container"><div class="eyebrow">For manufacturers and suppliers</div><h1>Help build better supply chains.</h1><p>If your business makes or distributes packaging or materials with supported environmental attributes, introduce your capabilities to EcoGlobal.</p></div></div>
+ <div class="section container"><div class="form-layout">
+  <form class="form-card" id="supplier-form">
+   <h2>Introduce your company</h2><p>Prepare a supplier introduction that you can send from your email application. Listings and verification are not automatic.</p>
+   <div class="fields">
+    <div class="field"><label for="s-company">Company name *</label><input id="s-company" name="company" required maxlength="120" autocomplete="organization" placeholder="Your company"></div>
+    <div class="field"><label for="s-contact">Contact person *</label><input id="s-contact" name="contact" required maxlength="90" autocomplete="name" placeholder="Your name"></div>
+    <div class="field"><label for="s-email">Business email *</label><input id="s-email" name="email" type="email" required maxlength="150" autocomplete="email" placeholder="name@company.com"></div>
+    <div class="field"><label for="s-country">Operating country *</label><input id="s-country" name="country" required maxlength="90" autocomplete="country-name" placeholder="Country"></div>
+    <div class="field full"><label for="s-materials">Products / material capabilities *</label><textarea id="s-materials" name="materials" required maxlength="1000" placeholder="Materials, manufacturing processes, standard sizes, capacity…"></textarea></div>
+    <div class="field"><label for="s-volume">Typical minimum order quantity</label><input id="s-volume" name="moq" maxlength="120" placeholder="e.g. 10,000 pieces"></div>
+    <div class="field"><label for="s-web">Company website</label><input id="s-web" name="website" type="url" maxlength="200" placeholder="https://"></div>
+    <div class="field full"><label for="s-evidence">Available supporting documents</label><textarea id="s-evidence" name="documents" maxlength="700" placeholder="Mention available test reports, standards, traceability documents, and relevant scope. Do not paste confidential files."></textarea></div>
+   </div>
+   <div class="form-actions"><button type="submit" class="btn btn-dark">Prepare introduction email ↗</button><button type="button" id="supplier-copy" class="btn btn-ghost">Copy details</button><button type="button" id="supplier-download" class="btn btn-ghost">Download</button></div>
+   <p class="fine muted" style="margin:20px 0 0">Your details stay in this browser until you choose to copy, download or send them via your mail application. Email delivery requires a functioning mail app and recipient mailbox.</p>
+  </form>
+  <aside class="side-panel"><h3>What we want to understand</h3><div class="checkitem"><span>✓</span> What you actually manufacture or supply</div><div class="checkitem"><span>✓</span> Where you operate and can ship</div><div class="checkitem"><span>✓</span> What documents support your claims</div><div class="checkitem"><span>✓</span> What volumes and timelines you support</div><div class="divider-line"></div><p><strong>Early-stage supplier network.</strong> Submitting an introduction does not create a listing, guarantee qualification, or imply EcoGlobal endorsement.</p></aside>
+ </div></div>
+</section>
+
+<section id="rfq" class="page" aria-label="Sourcing enquiry">
+ <div class="page-hero"><div class="container"><div class="eyebrow">Buyer workspace · Request for quotation</div><h1>Tell us what you need to source.</h1><p>Build a focused sourcing request in minutes. You'll receive a reusable RFQ text that can be copied, downloaded, or opened in your email app.</p></div></div>
+ <div class="section container"><div class="form-layout">
+  <form class="form-card" id="rfq-form">
+   <h2>New sourcing brief</h2><p>Include enough detail for a supplier to understand the need. This tool does not provide an instant price or confirm a supplier.</p>
+   <div class="fields">
+    <div class="field full"><label for="r-category">Material category *</label><select id="r-category" name="category" required><option value="">Choose a category</option></select></div>
+    <div class="field"><label for="r-quantity">Estimated quantity *</label><input id="r-quantity" name="quantity" required maxlength="80" placeholder="e.g. 20,000"></div>
+    <div class="field"><label for="r-unit">Unit *</label><select id="r-unit" name="unit" required><option value="pieces">Pieces</option><option value="kg">Kilograms</option><option value="tons">Metric tons</option><option value="rolls">Rolls</option><option value="other">Other (describe in notes)</option></select></div>
+    <div class="field"><label for="r-country">Delivery destination *</label><input id="r-country" name="destination" required maxlength="120" placeholder="City, country"></div>
+    <div class="field"><label for="r-time">Required timeframe</label><select id="r-time" name="timeline"><option value="Flexible / discuss">Flexible / discuss</option><option value="Within 30 days">Within 30 days</option><option value="1–3 months">1–3 months</option><option value="3–6 months">3–6 months</option><option value="Ongoing supply">Ongoing supply</option></select></div>
+    <div class="field full"><label for="r-details">Application and specifications *</label><textarea id="r-details" name="specifications" required maxlength="1600" placeholder="Application, dimensions, thickness, load requirements, material preferences, performance standards, customization, etc."></textarea></div>
+    <div class="field full"><label for="r-evidence">Evidence / certifications to request</label><textarea id="r-evidence" name="evidence" maxlength="800" placeholder="List required material information or reports, e.g. recycled content evidence, relevant compostability testing or chain-of-custody scope."></textarea></div>
+    <div class="field"><label for="r-company">Company name *</label><input id="r-company" name="company" autocomplete="organization" required maxlength="120" placeholder="Business name"></div>
+    <div class="field"><label for="r-contact">Contact name *</label><input id="r-contact" name="contact" autocomplete="name" required maxlength="90" placeholder="Contact person"></div>
+    <div class="field full"><label for="r-email">Contact email *</label><input id="r-email" name="email" autocomplete="email" type="email" required maxlength="150" placeholder="name@company.com"></div>
+   </div>
+   <div class="form-actions"><button class="btn btn-dark" type="submit">Prepare RFQ email ↗</button><button class="btn btn-ghost" type="button" id="rfq-copy">Copy RFQ</button><button class="btn btn-ghost" type="button" id="rfq-download">Download RFQ</button></div>
+   <p class="fine muted" style="margin:20px 0 0">No enquiry is submitted to EcoGlobal automatically. Clicking “Prepare RFQ email” opens your email application for review and manual sending. Please confirm the email recipient before sending.</p>
+  </form>
+  <aside class="side-panel"><h3>A useful RFQ includes</h3><div class="checkitem"><span>✓</span> Material or intended application</div><div class="checkitem"><span>✓</span> Dimensions, quality, and quantity</div><div class="checkitem"><span>✓</span> Destination and delivery expectations</div><div class="checkitem"><span>✓</span> What proof is required for environmental claims</div><div class="divider-line"></div><p>Unsure about a specification? Describe the use case and ask suppliers for the relevant test data before selecting a material.</p><div class="notice">Your form data is not stored by the site and does not leave the browser unless you choose an external action.</div></aside>
+ </div></div>
+</section>
+
+<section id="about" class="page" aria-label="About EcoGlobal">
+ <div class="page-hero"><div class="container"><div class="eyebrow">The idea behind EcoGlobal</div><h1>Better commerce begins<br>with better questions.</h1><p>EcoGlobal is an emerging B2B initiative exploring how global sustainable sourcing can become more accessible, evidence-driven and efficient.</p></div></div>
+ <div class="section container"><div class="split">
+  <div><div class="eyebrow">Why this exists</div><h2 class="block-title">Sustainability and practicality belong together.</h2><p class="muted" style="line-height:1.85">Businesses making material decisions need more than eco buzzwords. They need suitable products, pricing clarity, quality, technical documents, realistic logistics, and reliable supply relationships. We are creating a platform concept that brings those elements into one structured journey.</p><p class="muted" style="line-height:1.85">Our initial focus is packaging and adjacent material categories. Over time, the platform may expand into additional product families and technology-enabled sourcing workflows as real supply and customer demand are established.</p><a class="btn btn-dark" href="#discover">Explore materials ↗</a></div>
+  <div class="promise"><span class="pill dark">Our direction</span><h3>Global market access.<br>Grounded material decisions.</h3><p>We aim to connect buyers and suppliers through clearer requirements, useful evidence, and a more intentional procurement experience.</p><div class="checklist"><div class="checkitem"><span>✓</span> Start with focused, relevant categories</div><div class="checkitem"><span>✓</span> Prefer documented claims to broad promises</div><div class="checkitem"><span>✓</span> Build trust before accelerating transactions</div></div></div>
+ </div></div>
+ <div class="section soft"><div class="container"><div class="section-head"><div><div class="eyebrow">Current stage</div><h2>Building openly, without invented scale.</h2><p>This is an early-stage business platform. We haven't published transaction volumes, supplier counts, unverified environmental impact numbers, or endorsements.</p></div></div><div class="grid-3"><div class="process-card"><div class="num">01</div><h3>Current release</h3><p>Category discovery, evidence guidance, a buyer RFQ generator, and supplier introduction tools.</p></div><div class="process-card"><div class="num">02</div><h3>Next foundation</h3><p>Real supplier onboarding, document review, private enquiry storage, and operational follow-up.</p></div><div class="process-card"><div class="num">03</div><h3>Future marketplace</h3><p>Supplier matching, quotes, comparisons, purchase workflows, and account dashboards once infrastructure is ready.</p></div></div></div></div>
+ <div class="section tight container"><div class="callout"><div><div class="eyebrow" style="color:#bde89c">Let's build the supply network</div><h2>Are you a supplier or a buyer?</h2><p>Choose your path and prepare a structured introduction.</p></div><div class="hero-actions" style="margin:0"><a href="#rfq" class="btn btn-lime">I'm sourcing ↗</a><a href="#suppliers" class="btn btn-ghost" style="color:white;border-color:#6b947b">I'm supplying ↗</a></div></div></div>
+</section>
+</main>
+
+<footer class="site-footer"><div class="container">
+ <div class="footer-grid">
+  <div><a href="#home" class="brand"><span class="brand-mark">✳</span><span>eco<b style="color:#b8e493">global</b></span></a><p>Practical thinking for more responsible global sourcing. Starting with packaging and materials.</p><span class="pill dark">Early-stage B2B platform</span></div>
+  <div><h4>Explore</h4><a href="#discover">Materials directory</a><a href="#how">How it works</a><a href="#rfq">Buyer RFQ</a></div>
+  <div><h4>Company</h4><a href="#about">Our approach</a><a href="#suppliers">Supplier introduction</a><a href="#how">Evidence guidelines</a></div>
+  <div><h4>Get in touch</h4><p>For sourcing conversations, use our RFQ builder. For supplier introductions, use the supplier form.</p><a href="mailto:info@ecoglobal.in">info@ecoglobal.in ↗</a><p class="tiny">Email delivery depends on the recipient mailbox being active.</p></div>
+ </div>
+ <div class="footer-base"><span>© <span id="year">2026</span> EcoGlobal. All rights reserved.</span><span>Early-stage platform · No transactions or supplier endorsements are implied · <a style="display:inline;color:inherit" href="#about">About</a></span></div>
+</div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/app.js" defer></script>
 </body>
 </html>
