@@ -6,6 +6,16 @@
 
 EcoGlobal is being developed as a global B2B sourcing marketplace, beginning with sustainable packaging and adjacent materials. Its working principles are clear requirements, accurate product documentation, and practical buyer–supplier conversations.
 
+## New: Phase 2 + 3 integrated marketplace foundation (26 October 2026)
+
+**Workspace:** https://ecoglobal.in/portal.html
+
+The connected public website now links to a separate buyer/supplier marketplace workspace. Its front end and Supabase PostgreSQL migration are committed, but **the backend is not activated until a personal Supabase project is configured and the SQL migration is applied.** This is not yet a live transaction marketplace.
+
+The implementation includes managed authentication, buyer RFQs, category-driven matching, approved supplier/product listings, supplier onboarding, private evidence storage, quotation submission/decisions, admin review RPCs and private in-app notices. The `assets/config.js` file intentionally contains no live backend credentials.
+
+Follow [the complete activation and security guide](docs/PHASE_2_3_SETUP.md). Do not accept real customer data before HTTPS is active, an administrator is bootstrapped, the RLS isolation checks pass and real supplier evidence is reviewed.
+
 ## What is implemented
 
 - Responsive company website with dedicated home, catalogue, how-it-works, supplier, buyer RFQ, and about sections
@@ -18,10 +28,10 @@ EcoGlobal is being developed as a global B2B sourcing marketplace, beginning wit
 
 ### Important current limitations
 
-**This is a public-facing, interactive MVP; it is not yet a production transaction marketplace.**
+**This is a public-facing, interactive MVP; the operational workspace backend is implemented in code but not yet connected to a production database.**
 
 - There are **no registered or verified suppliers** and no live product offers.
-- There is **no backend, user account, database, automated RFQ submission, supplier matching, payment, checkout, quotation exchange or order status**.
+- The **existing corporate website** still has no server-side RFQ intake. The **new /portal.html workspace** has complete client code and backend migration for accounts, RFQ submission, matching and quotations, but these remain inactive until personal Supabase provisioning. There is still no payment, checkout, shipping or order-management service.
 - An email button creates a mail draft on the visitor's device. It does **not** store or transmit a form submission on EcoGlobal's servers.
 - The provisional contact destination in the code is \`info@ecoglobal.in\`. **Verify that this mailbox is active and can receive external email before inviting real buyers/suppliers to contact the business.** The GoDaddy DNS screenshot from Oct 26 showed no MX record; check the actual mail service.
 - Material descriptions are examples of sourcing **categories**, not certified environmental claims or inventory guarantees.
