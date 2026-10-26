@@ -89,6 +89,7 @@ create table if not exists public.notifications (
   is_read boolean not null default false,
   created_at timestamptz not null default now()
 );
+create unique index if not exists suppliers_one_org_per_owner on public.suppliers(owner_id);
 create index if not exists suppliers_owner_idx on public.suppliers(owner_id);
 create index if not exists products_supplier_idx on public.products(supplier_id);
 create index if not exists products_category_status_idx on public.products(category,status);
@@ -159,7 +160,15 @@ begin
     raise exception 'Approve the supplier first';
   end if;
   update public.products set status=decision,review_note=left(coalesce(note,''),1000) where id=pid;
-end $$;
+  -- When a listing is approved, also match open requests submitted earlier.
+  if decision='approved' then
+    insert into public.rfq_matches(rfq_id,supplier_id)
+    select r.id,p.supplier_id from public.products p
+    join public.rfqs r on r.category=p.category and r.status='open'
+    where p.id=pid and p.status='approved'
+    order by r.created_at desc limit 200 on conflict do nothing;
+  end if;
+end $;
 create or replace function public.invite_supplier(rid uuid, sid uuid) returns void
 language plpgsql security definer set search_path='' as $$
 begin
@@ -240,7 +249,7 @@ create policy "product owner edit" on public.products for update to authenticate
 create policy "rfq parties read" on public.rfqs for select to authenticated
 using (buyer_id=(select auth.uid()) or (select public.is_platform_admin()) or exists(
   select 1 from public.rfq_matches m join public.suppliers s on s.id=m.supplier_id
-  where m.rfq_id=id and s.owner_id=(select auth.uid()) and s.status='approved'
+  where m.rfq_id=rfqs.id and s.owner_id=(select auth.uid()) and s.status='approved'
 ));
 create policy "buyer create rfq" on public.rfqs for insert to authenticated with check(buyer_id=(select auth.uid()));
 create policy "buyer close rfq" on public.rfqs for update to authenticated using(buyer_id=(select auth.uid())) with check(buyer_id=(select auth.uid()));
@@ -253,7 +262,7 @@ create policy "quote parties read" on public.quotes for select to authenticated 
 create policy "matched supplier creates quote" on public.quotes for insert to authenticated with check(
   (select public.owns_supplier(supplier_id))
   and exists(select 1 from public.suppliers s where s.id=supplier_id and s.status='approved')
-  and exists(select 1 from public.rfq_matches m where m.rfq_id=rfq_id and m.supplier_id=supplier_id)
+  and exists(select 1 from public.rfq_matches m where m.rfq_id=quotes.rfq_id and m.supplier_id=quotes.supplier_id)
   and exists(select 1 from public.rfqs r where r.id=rfq_id and r.status='open')
 );
 create policy "buyer makes quote decision" on public.quotes for update to authenticated
