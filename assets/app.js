@@ -18,7 +18,7 @@ function viewRoute(){
  if(!$(page)||!$(page).classList.contains("page"))page="home";
  document.querySelectorAll(".page").forEach(function(el){el.classList.toggle("active",el.id===page)});
  document.querySelectorAll("[data-nav]").forEach(function(el){var isActive=el.getAttribute("data-nav")===page;el.classList.toggle("active",isActive);if(isActive)el.setAttribute("aria-current","page");else el.removeAttribute("aria-current")});
- closeMenu();window.scrollTo({top:0,behavior:"instant"});
+ closeMenu();window.scrollTo({top:0,behavior:"auto"});
  if(page==="discover")renderCatalog();
 }
 function cardHTML(m){return '<article class="category-card"><div class="category-art '+m.tone+'" aria-hidden="true">'+m.icon+'</div><div><span class="eyebrow" style="font-size:10px">'+m.family+'</span><h3>'+m.name+'</h3></div><p>'+m.summary+'</p><div class="card-bottom"><button type="button" class="btn btn-text btn-small" data-view="'+m.id+'" aria-label="Explore '+m.name+'">Explore category ↗</button><span class="material">Sourcing category</span></div></article>'}
@@ -68,7 +68,7 @@ function init(){
  $("catalog-search").addEventListener("input",function(e){searchQuery=e.target.value.trim().toLowerCase();renderCatalog()});
  $("catalog-filters").addEventListener("click",function(e){var btn=e.target.closest("[data-family]");if(!btn)return;activeFamily=btn.getAttribute("data-family");document.querySelectorAll("[data-family]").forEach(function(el){el.classList.toggle("active",el===btn)});renderCatalog()});
  document.addEventListener("click",function(e){
-  var view=e.target.closest("[data-view]");if(view){if(location.hash!=="#discover"){location.hash="discover"}details(view.getAttribute("data-view"));return}
+  var view=e.target.closest("[data-view]");if(view){var selectedId=view.getAttribute("data-view");if(location.hash!=="#discover"){location.hash="discover";setTimeout(function(){details(selectedId)},70)}else{details(selectedId)}return}
   var src=e.target.closest("[data-source]");if(src){var m=materials.find(function(x){return x.id===src.getAttribute("data-source")});if(m)$("r-category").value=m.name;location.hash="rfq";return}
   if(e.target.closest("[data-close-detail]")){$("material-detail").classList.remove("open")}
  });
