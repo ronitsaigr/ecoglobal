@@ -210,6 +210,22 @@ end $$;
 drop trigger if exists trg_notify_quote on public.quotes;
 create trigger trg_notify_quote after insert on public.quotes for each row execute function public.notify_quote();
 
+create or replace function public.notify_quote_decision() returns trigger
+language plpgsql security definer set search_path='' as $
+begin
+  if new.status is distinct from old.status and new.status in ('accepted','declined') then
+    insert into public.notifications(user_id,message,related_id)
+    select owner_id,
+           case when new.status='accepted' then 'A buyer accepted your quotation' else 'A buyer declined your quotation' end,
+           new.rfq_id
+    from public.suppliers where id=new.supplier_id;
+  end if;
+  return new;
+end $;
+drop trigger if exists trg_notify_quote_decision on public.quotes;
+create trigger trg_notify_quote_decision after update of status on public.quotes
+for each row execute function public.notify_quote_decision();
+
 create or replace function public.validate_quote_decision() returns trigger language plpgsql set search_path='' as $$
 begin
   if old.status <> 'submitted' or new.status not in ('accepted','declined') then
@@ -298,7 +314,7 @@ revoke execute on function public.review_supplier(uuid,text,text),public.review_
 grant execute on function public.review_supplier(uuid,text,text),public.review_product(uuid,text,text),public.invite_supplier(uuid,uuid) to authenticated;
 revoke execute on function public.is_platform_admin(),public.owns_supplier(uuid),public.owns_rfq(uuid) from public,anon;
 grant execute on function public.is_platform_admin(),public.owns_supplier(uuid),public.owns_rfq(uuid) to authenticated;
-revoke execute on function public.on_signup_profile(),public.reset_supplier_review(),public.reset_product_review(),public.auto_match_rfq(),public.notify_match(),public.notify_quote(),public.validate_quote_decision() from public,anon,authenticated;
+revoke execute on function public.on_signup_profile(),public.reset_supplier_review(),public.reset_product_review(),public.auto_match_rfq(),public.notify_match(),public.notify_quote(),public.notify_quote_decision(),public.validate_quote_decision() from public,anon,authenticated;
 
 -- Private supplier evidence; uploaded paths must start with the uploader UUID.
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
