@@ -2,7 +2,8 @@
 "use strict";
 const cats=["Paper & board","Fiber alternatives","Flexible formats","Circular systems","Packaging components"];
 const cfg=window.ECOGLOBAL_CONFIG||{};
-const ready=/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(cfg.url||"") && typeof cfg.anonKey==="string" && cfg.anonKey.length>30 && !!window.supabase;
+const secure=location.protocol==="https:"||location.hostname==="localhost"||location.hostname==="127.0.0.1";
+const ready=secure && /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(cfg.url||"") && typeof cfg.anonKey==="string" && cfg.anonKey.length>30 && !!window.supabase;
 const db=ready?window.supabase.createClient(cfg.url,cfg.anonKey,{auth:{detectSessionInUrl:true}}):null;
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
