@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="EcoGlobal buyer and supplier portal: discover reviewed sustainable material listings, submit sourcing requests and compare quotations.">
+<title>EcoGlobal | Sourcing workspace</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/portal.css"></head>
+<body>
+<header class="mast"><div class="wrap mast-inner"><a href="/" class="logo" aria-label="EcoGlobal home">✳ eco<span>global</span></a>
+<nav aria-label="Workspace"><button class="nav active" data-tab="explore">Explore</button><button class="nav" data-tab="buyer">Buyer desk</button><button class="nav" data-tab="supplier">Supplier desk</button><button class="nav" data-tab="admin" hidden>Admin</button></nav>
+<div class="account"><span id="who">Visitor</span><button class="btn small" id="auth-open">Log in / Join</button><button class="btn small outline" id="logout" hidden>Sign out</button></div></div></header>
+<div class="banner"><div class="wrap"><strong>EcoGlobal workspace</strong> <span>New listings are published only after review. Supplier claims and documents should still be independently assessed by buyers.</span></div></div>
+<main class="wrap">
+<div id="notice" role="status" aria-live="polite" class="notice" hidden></div>
+<div id="setup" class="setup" hidden><h2>Workspace backend not connected</h2><p>The portal interface is deployed, but sign-in, RFQs, supplier verification and quotations require a personal Supabase project. Configure <code>assets/config.js</code> after applying the migration. No customer information is collected by this page while disconnected.</p><a href="https://github.com/ronitsaigr/ecoglobal/blob/main/docs/PHASE_2_3_SETUP.md">Read backend activation guide →</a></div>
+
+<section class="view active" id="view-explore">
+<div class="heading"><div><span class="eyebrow">SOURCING CATALOGUE</span><h1>Find materials and suppliers.</h1><p>Browse approved company listings and prepare your next sourcing requirement.</p></div><button class="btn primary" data-tab="buyer">Post a sourcing request →</button></div>
+<div class="filters"><label>Category<select id="category-filter"><option value="">All categories</option></select></label><label>Search<input id="product-search" type="search" placeholder="Material, product or supplier"></label><button class="btn outline" id="refresh-products">Refresh</button></div>
+<div id="products-grid" class="cards"><div class="empty">Connect the database to display reviewed supplier listings. The main website has educational sourcing categories.</div></div>
+</section>
+
+<section class="view" id="view-buyer">
+<div class="heading"><div><span class="eyebrow">BUYER WORKSPACE</span><h1>Sourcing requests & quotations.</h1><p>Submit a real RFQ, view suppliers matched by category and compare responses.</p></div></div>
+<div id="buyer-gate" class="empty">Log in with a buyer account to manage sourcing requests.</div>
+<div id="buyer-app" hidden>
+<div class="cols"><form class="panel" id="rfq-form"><h2>Create a sourcing request</h2>
+<label>Request title<input name="title" required minlength="5" maxlength="180" placeholder="e.g. 10,000 custom paper mailers"></label>
+<label>Material category<select name="category" required class="category-options"></select></label>
+<div class="pair"><label>Quantity<input name="quantity" type="number" min="0.01" step="0.01" required></label><label>Unit<input name="unit" value="units" required maxlength="40"></label></div>
+<div class="pair"><label>Delivery country<input name="destination_country" required maxlength="100" placeholder="India"></label><label>Needed by<input name="needed_by" type="date"></label></div>
+<label>Technical specifications<textarea name="details" required minlength="10" maxlength="5000" rows="5" placeholder="Dimensions, usage, certifications to verify, material, volumes, commercial terms..."></textarea></label>
+<p class="hint">Only matched, approved suppliers and admins can access this RFQ. Avoid entering confidential business secrets.</p>
+<button class="btn primary" type="submit">Submit RFQ</button></form>
+<div class="panel"><div class="panel-head"><h2>Your requests</h2><button class="btn small outline" id="refresh-rfqs">Refresh</button></div><div id="buyer-rfqs" class="stack"><div class="empty">No requests yet.</div></div></div></div></div>
+</section>
+
+<section class="view" id="view-supplier">
+<div class="heading"><div><span class="eyebrow">SUPPLIER WORKSPACE</span><h1>Become a sourcing partner.</h1><p>Apply for review, register product capabilities and respond to matched buyer enquiries.</p></div></div>
+<div id="supplier-gate" class="empty">Log in with a supplier account to join the network.</div>
+<div id="supplier-app" hidden><div class="cols">
+<div><form id="supplier-form" class="panel"><h2>Company profile</h2><div id="supplier-state" class="hint">Submit your profile for review.</div>
+<label>Company name<input name="name" minlength="2" maxlength="160" required></label><label>Country<input name="country" required maxlength="100"></label>
+<label>Company website<input name="website" type="url" placeholder="https://example.com"></label>
+<label>Manufacturing capabilities<textarea name="description" rows="4" maxlength="2000" placeholder="What you manufacture, certifications available for review, capacity..."></textarea></label>
+<div class="pair"><label>Contact name<input name="contact_name" maxlength="120"></label><label>Contact email<input name="contact_email" type="email" maxlength="180"></label></div>
+<label>Contact phone<input name="contact_phone" maxlength="60"></label>
+<button type="submit" class="btn primary">Save company & request review</button></form>
+<form id="product-form" class="panel" hidden><h2>Add a material listing</h2><label>Product name<input name="name" minlength="2" maxlength="160" required></label>
+<label>Category<select name="category" class="category-options" required></select></label>
+<label>Capabilities and material details<textarea name="description" rows="4" maxlength="2000"></textarea></label>
+<div class="pair"><label>Minimum order<input name="min_order_quantity" type="number" step="0.01" min="0.01"></label><label>Unit<input name="unit" value="units" maxlength="40"></label></div>
+<button class="btn primary">Send listing for review</button></form>
+<form class="panel" id="document-form" hidden><h2>Upload supporting evidence</h2><p class="hint">Private evidence is accessible only to your account and EcoGlobal admins. Upload PDF, PNG or JPG, up to 5 MB. Do not upload sensitive identity documents.</p>
+<label>Document type<input name="document_type" maxlength="100" placeholder="Test report / chain of custody / product spec"></label>
+<label>File<input name="evidence" type="file" accept=".pdf,.png,.jpg,.jpeg" required></label><button class="btn primary">Upload evidence privately</button></form>
+</div><div><div class="panel"><div class="panel-head"><h2>Listings</h2><button class="btn small outline" id="refresh-supplier">Refresh</button></div><div class="stack" id="my-products">No listings yet.</div></div>
+<div class="panel"><h2>Private documents</h2><div class="stack" id="my-documents">No documents yet.</div></div>
+<div class="panel"><h2>Matched buyer RFQs</h2><div class="stack" id="supplier-matches">No eligible requests yet.</div></div></div>
+</div></div></section>
+
+<section class="view" id="view-admin"><div class="heading"><div><span class="eyebrow">ACCESS RESTRICTED</span><h1>Marketplace review desk.</h1><p>Approve supplier organizations and products only after evidence checks. Review supplier applications, match RFQs and audit activity.</p></div></div>
+<div class="cards two"><div class="panel"><h2>Supplier applications</h2><div class="stack" id="review-suppliers">Loading...</div></div><div class="panel"><h2>Product approvals</h2><div class="stack" id="review-products">Loading...</div></div></div>
+<div class="panel"><h2>Assign a sourcing request manually</h2><form id="invite-form" class="inline-form"><label>Open RFQ<select id="invite-rfq" required></select></label><label>Approved supplier<select id="invite-supplier" required></select></label><button class="btn primary">Send invitation</button></form></div></section>
+
+<section id="alert-panel" class="panel alerts" hidden><div class="panel-head"><h2>Notifications</h2><button id="refresh-alerts" class="btn outline small">Refresh</button></div><div id="alerts" class="stack"></div></section>
+</main>
+<div id="auth-modal" class="modal" hidden><div class="auth-box"><button id="auth-close" class="close" aria-label="Close sign in">✕</button><span class="eyebrow">YOUR ECOGLOBAL ACCOUNT</span><h2>Sign in or create an account</h2>
+<form id="auth-form"><label>Email<input type="email" name="email" required autocomplete="email"></label><label>Password<input type="password" name="password" required minlength="8" autocomplete="current-password"></label>
+<div id="signup-fields" hidden><label>Your full name<input name="full_name" maxlength="160" placeholder="Full name"></label><label>Account type<select name="account_type"><option value="buyer">I'm a buyer</option><option value="supplier">I'm a supplier</option></select></label></div>
+<button type="submit" id="auth-submit" class="btn primary wide">Sign in</button></form><button class="text-btn" id="auth-switch">New here? Create an account</button><p class="hint">Sign-up may require email confirmation. No payments are collected in this workspace.</p></div></div>
+<footer class="footer"><div class="wrap"><span>✳ ecoglobal · sourcing workspace</span><div><a href="/">Corporate website</a><a href="mailto:info@ecoglobal.in">Contact</a></div><small>Supplier status indicates an internal review, not certification or a guarantee of performance.</small></div></footer>
+<script src="/assets/config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/assets/portal.js" defer></script>
+</body></html>
