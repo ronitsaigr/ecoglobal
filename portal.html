@@ -11,7 +11,7 @@
 <div class="banner"><div class="wrap"><strong>EcoGlobal workspace</strong> <span>New listings are published only after review. Supplier claims and documents should still be independently assessed by buyers.</span></div></div>
 <main class="wrap">
 <div id="notice" role="status" aria-live="polite" class="notice" hidden></div>
-<div id="setup" class="setup" hidden><h2>Workspace backend not connected</h2><p>The portal interface is deployed, but sign-in, RFQs, supplier verification and quotations require a personal Supabase project. Configure <code>assets/config.js</code> after applying the migration. No customer information is collected by this page while disconnected.</p><a href="https://github.com/ronitsaigr/ecoglobal/blob/main/docs/PHASE_2_3_SETUP.md">Read backend activation guide →</a></div>
+<div id="setup" class="setup" hidden><h2>Workspace backend not connected</h2><p>The Cloudflare marketplace API is not yet active. Buyer sign-in, supplier evidence, RFQs and quotations are unavailable until the independent Cloudflare Workers, D1 and R2 backend is deployed. No customer data is collected while disconnected.</p><a href="https://github.com/ronitsaigr/ecoglobal/blob/main/docs/CLOUDFLARE_SETUP.md">Read backend activation guide →</a></div>
 
 <section class="view active" id="view-explore">
 <div class="heading"><div><span class="eyebrow">SOURCING CATALOGUE</span><h1>Find materials and suppliers.</h1><p>Browse approved company listings and prepare your next sourcing requirement.</p></div><button class="btn primary" data-tab="buyer">Post a sourcing request →</button></div>
@@ -70,5 +70,5 @@
 <div id="signup-fields" hidden><label>Your full name<input name="full_name" maxlength="160" placeholder="Full name"></label><label>Account type<select name="account_type"><option value="buyer">I'm a buyer</option><option value="supplier">I'm a supplier</option></select></label></div>
 <button type="submit" id="auth-submit" class="btn primary wide">Sign in</button></form><button class="text-btn" id="auth-switch">New here? Create an account</button><p class="hint">Sign-up may require email confirmation. No payments are collected in this workspace.</p></div></div>
 <footer class="footer"><div class="wrap"><span>✳ ecoglobal · sourcing workspace</span><div><a href="/">Corporate website</a><a href="mailto:info@ecoglobal.in">Contact</a></div><small>Supplier status indicates an internal review, not certification or a guarantee of performance.</small></div></footer>
-<script src="/assets/config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/assets/portal.js" defer></script>
+<script src="/assets/config.js"></script><script src="/assets/portal-cloudflare.js" defer></script>
 </body></html>
