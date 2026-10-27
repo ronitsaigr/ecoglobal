@@ -1,6 +1,4 @@
-// Public browser configuration only. Never place Supabase service_role or secret keys here.
-// Replace these values AFTER creating your personal Supabase project and running the migration.
-window.ECOGLOBAL_CONFIG = {
-  url: "",
-  anonKey: ""
-};
+// EcoGlobal public browser configuration — no secret keys belong here.
+// After deploying your own Cloudflare Worker, set its public HTTPS URL.
+// Example: https://ecoglobal-api.YOUR-SUBDOMAIN.workers.dev
+window.ECOGLOBAL_CONFIG = { apiBase: "" };
