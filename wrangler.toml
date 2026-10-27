@@ -3,13 +3,13 @@ main = "cloudflare/src/worker.js"
 compatibility_date = "2026-10-27"
 workers_dev = true
 
-# Keep this Worker, D1 database, and private R2 bucket under an account owned by EcoGlobal.
-# Run "npx wrangler d1 create ecoglobal-marketplace" and paste the returned database_id.
-# R2 must first be enabled for the target Cloudflare account.
+# EcoGlobal's PERSONAL Cloudflare account. Do not deploy from an Outskill profile.
+account_id = "299d3d658aaf5f9490802917dcb4f704"
+
 [[d1_databases]]
 binding = "DB"
-database_name = "ecoglobal-marketplace"
-database_id = "REPLACE_WITH_ECOGLOBAL_D1_DATABASE_ID"
+database_name = "ecoglobal-db"
+database_id = "3662c75f-b552-471d-aa78-284c04224a40"
 migrations_dir = "cloudflare/migrations"
 
 [[r2_buckets]]
