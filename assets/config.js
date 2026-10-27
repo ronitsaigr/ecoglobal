@@ -1,4 +1,3 @@
-// EcoGlobal public browser configuration — no secret keys belong here.
-// After deploying your own Cloudflare Worker, set its public HTTPS URL.
-// Example: https://ecoglobal-api.YOUR-SUBDOMAIN.workers.dev
-window.ECOGLOBAL_CONFIG = { apiBase: "" };
+// EcoGlobal public configuration; backend secrets must never appear here.
+// Hosted on the independent, personally owned Cloudflare account.
+window.ECOGLOBAL_CONFIG = { apiBase: "https://ecoglobal-api.ecoglobal-prashanth.workers.dev" };
