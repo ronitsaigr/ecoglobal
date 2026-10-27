@@ -1,84 +1,55 @@
-# EcoGlobal — Sustainable sourcing platform
+# EcoGlobal — B2B sustainable sourcing platform
 
-**Live target:** https://ecoglobal.in  
-**Repository:** https://github.com/ronitsaigr/ecoglobal  
-**Delivery:** GitHub Pages, publishing the \`main\` branch from the repository root
+**Website:** https://ecoglobal.in
+**Marketplace workspace:** https://ecoglobal.in/portal.html
+**Code:** https://github.com/ronitsaigr/ecoglobal
 
-EcoGlobal is being developed as a global B2B sourcing marketplace, beginning with sustainable packaging and adjacent materials. Its working principles are clear requirements, accurate product documentation, and practical buyer–supplier conversations.
+EcoGlobal is an independent global B2B sourcing initiative, initially focused on sustainable packaging and related materials. Buyers can specify requirements; suppliers can apply for review and respond to matched RFQs.
 
-## New: Phase 2 + 3 integrated marketplace foundation (26 October 2026)
+## Current architecture
 
-**Workspace:** https://ecoglobal.in/portal.html
-
-The connected public website now links to a separate buyer/supplier marketplace workspace. Its front end and Supabase PostgreSQL migration are committed, but **the backend is not activated until a personal Supabase project is configured and the SQL migration is applied.** This is not yet a live transaction marketplace.
-
-The implementation includes managed authentication, buyer RFQs, category-driven matching, approved supplier/product listings, supplier onboarding, private evidence storage, quotation submission/decisions, admin review RPCs and private in-app notices. The `assets/config.js` file intentionally contains no live backend credentials.
-
-Follow [the complete activation and security guide](docs/PHASE_2_3_SETUP.md). Do not accept real customer data before HTTPS is active, an administrator is bootstrapped, the RLS isolation checks pass and real supplier evidence is reviewed.
-
-## What is implemented
-
-- Responsive company website with dedicated home, catalogue, how-it-works, supplier, buyer RFQ, and about sections
-- Browse/search/filter across six **sourcing categories**, not real-time product inventory
-- Material descriptions, likely applications, and a documentation checklist for buyer due diligence
-- Buyer RFQ creator with required fields, email-draft option, clipboard copy, and downloadable TXT
-- Supplier introduction form with the same email-draft / clipboard / download options
-- Category-to-RFQ preselection, FAQ, basic SEO metadata, sitemap, mobile navigation and accessibility features
-- Custom domain and GitHub Pages static hosting
-
-### Important current limitations
-
-**This is a public-facing, interactive MVP; the operational workspace backend is implemented in code but not yet connected to a production database.**
-
-- There are **no registered or verified suppliers** and no live product offers.
-- The **existing corporate website** still has no server-side RFQ intake. The **new /portal.html workspace** has complete client code and backend migration for accounts, RFQ submission, matching and quotations, but these remain inactive until personal Supabase provisioning. There is still no payment, checkout, shipping or order-management service.
-- An email button creates a mail draft on the visitor's device. It does **not** store or transmit a form submission on EcoGlobal's servers.
-- The provisional contact destination in the code is \`info@ecoglobal.in\`. **Verify that this mailbox is active and can receive external email before inviting real buyers/suppliers to contact the business.** The GoDaddy DNS screenshot from Oct 26 showed no MX record; check the actual mail service.
-- Material descriptions are examples of sourcing **categories**, not certified environmental claims or inventory guarantees.
-- Never label suppliers 'verified' until an established evidence-review procedure has been applied to those suppliers and the results documented.
-
-## Site layout
-
-\`\`\`
-index.html           B2B platform interface
-assets/styles.css    Responsive visual system
-assets/app.js        Category search/filter and browser-side RFQ tools
-favicon.svg          Brand icon
-CNAME                Custom GitHub Pages domain
-.nojekyll            Static hosting setting
-404.html             Error page
-robots.txt           Crawler directive
-sitemap.xml          Site map
-docs/OPERATING_PLAN.md  Go-to-market and product roadmap
-\`\`\`
-
-## Publishing
-
-Every push to \`main\` republishes GitHub Pages (if Pages remains set to deploy from \`main\`, root). In **Settings → Pages** the custom domain should be \`ecoglobal.in\`.
-
-Current recommended DNS (at the authoritative DNS provider):
-
-| Type | Host | Destination |
+| Layer | Technology | Status |
 | --- | --- | --- |
-| A | @ | 185.199.108.153 |
-| A | @ | 185.199.109.153 |
-| A | @ | 185.199.110.153 |
-| A | @ | 185.199.111.153 |
-| CNAME | www | ronitsaigr.github.io |
+| Company website | GitHub Pages on GoDaddy-managed `ecoglobal.in` | Source committed |
+| Marketplace UI | Vanilla HTML/CSS/JavaScript | Committed, backend disabled |
+| API | Cloudflare Workers | Source committed, not deployed |
+| Relational data | Cloudflare D1 (SQLite) | Migration committed, not applied |
+| Supplier evidence | Private Cloudflare R2 bucket | Planned binding; R2 not enabled in connected account |
+| Auth | Worker-managed, invitation-only login | Written, awaiting deployment |
+| Data safety | Backend role checks, input validation, approved-only catalog, hashed sessions | Requires live tests |
 
-Do not remove mail-related DNS records. Enable **Enforce HTTPS** when the certificate has been provisioned.
+**Cloudflare is the selected backend. There is no active Supabase dependency.**
 
-## Next steps to make this an operating business
+## Code layout
 
-1. Set up a working domain inbox or a backend intake service; test a complete enquiry from a different email account.
-2. Decide the legal business identity, applicable buyer/supplier terms and a suitable privacy notice, with professional review.
-3. Stand up authentication, database, file/document storage, notifications, abuse controls and audit trail.
-4. Start actual suppliers in one tight vertical, verify documentation within a defined standard and review cadence, and publish only approved offers.
-5. Enable private RFQs, supplier matching, quote requests, comparisons, follow-up status and business dashboards.
-6. Validate pricing, contracts, returns / disputes, cross-border trade requirements and payment flows before any transaction feature goes live.
+- `index.html`, `assets/styles.css`, `assets/app.js` — company website, educational catalogue and mailto-based RFQ draft creator.
+- `portal.html`, `assets/portal.css`, `assets/portal-cloudflare.js` — buyer, supplier and administrator workspace.
+- `assets/config.js` — public Cloudflare API URL. Blank until deployment.
+- `cloudflare/src/worker.js` — Workers API for accounts, invitations, companies, products, RFQs, matching, quotations, evidence, notifications and approvals.
+- `cloudflare/migrations/0001_initial.sql` — D1 schema and indexes.
+- `wrangler.toml` — Cloudflare deployment template with account-specific placeholder database UUID.
+- `docs/CLOUDFLARE_SETUP.md` — activation, security checklist and first-admin instructions.
+- `docs/OPERATING_PLAN.md` — the commercial operating plan.
+- `tests/check-site.mjs` — automated JavaScript and source-contract checks.
 
-See [docs/OPERATING_PLAN.md](docs/OPERATING_PLAN.md).
+## Important: not yet activated
 
-## No build step
+The source files have been committed to GitHub, but the cloud backend has **not** been deployed. The connected Cloudflare account is named after an Outskill work email, includes Project X-Cal infrastructure, and the R2 service is currently disabled. EcoGlobal customer data should be deployed only into an account controlled by the independent business.
 
-The site uses vanilla HTML/CSS/JS. To preview locally run any static HTTP server in the repository directory. Form data is only used within the current page and in user-initiated copy/download/mail actions.
+The portal displays a backend-not-connected message until `assets/config.js` contains a deployed HTTPS Worker URL. This avoids silently collecting buyer or supplier information.
+
+The corporate website's forms still prepare an email draft or TXT file; they are not server submissions. `info@ecoglobal.in` is provisional and must be checked before outreach.
+
+There are **no real onboarded suppliers, public product inventory, transactions, escrow, certification guarantees, checkout, payment processing, or logistics integrations**. The pilot is invitation-only; do not open public registration until verified email ownership, recovery, CAPTCHA/rate limiting, admin MFA, privacy notice and security tests are complete.
+
+## Deployment steps
+
+Follow [docs/CLOUDFLARE_SETUP.md](docs/CLOUDFLARE_SETUP.md). Keep GoDaddy as the authoritative DNS provider and GitHub Pages for the corporate site; the Worker can serve the API over its separate HTTPS workers.dev URL. Do not disrupt existing GitHub Pages DNS records.
+
+Use a personal/EcoGlobal-owned Cloudflare account, enable R2, create D1 and R2 resources, run the migration, deploy the Worker, then set `assets/config.js` to the public Worker URL.
+
+All pushes to `main` update GitHub Pages, but **do not** automatically deploy a Worker or apply database migrations. Those must run under the explicitly chosen independent Cloudflare account.
+
+## Business operating guidelines
+
+Supplier and product approvals are internal application reviews, **not independently issued certifications**. Check supporting evidence before making environmental claims. Validate trade policy, privacy, terms and tax obligations before sourcing transactions. Real RFQ email notifications and payments are not implemented.
