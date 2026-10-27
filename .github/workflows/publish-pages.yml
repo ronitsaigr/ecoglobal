@@ -1,0 +1,60 @@
+name: Publish EcoGlobal Website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ecoglobal-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out EcoGlobal
+        uses: actions/checkout@v4
+
+      - name: Assemble public website only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site/assets
+          for file in index.html portal.html 404.html CNAME .nojekyll favicon.svg robots.txt sitemap.xml; do
+            test -f "$file" || { echo "Missing $file" >&2; exit 1; }
+            cp "$file" "_site/$file"
+          done
+          for file in styles.css app.js portal.css portal-cloudflare.js config.js; do
+            test -f "assets/$file" || { echo "Missing assets/$file" >&2; exit 1; }
+            cp "assets/$file" "_site/assets/$file"
+          done
+          test "$(cat _site/CNAME)" = "ecoglobal.in"
+          grep -q 'apiBase:' _site/assets/config.js
+          grep -q 'portal-cloudflare.js' _site/portal.html
+          echo "Public website artifact assembled without Cloudflare backend files"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy EcoGlobal to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
