@@ -12,3 +12,4 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/check-site.mjs
+      - run: node tests/worker-smoke.mjs
